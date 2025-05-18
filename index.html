@@ -1,0 +1,44 @@
+import spacy
+import requests
+
+# Load the English NLP model
+nlp = spacy.load("en_core_web_md")
+
+# Replace with your actual OpenWeatherMap API key
+API_KEY = "YOUR_OPENWEATHERMAP_API_KEY"
+
+def get_weather(city):
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        weather = data["weather"][0]["description"]
+        temp = data["main"]["temp"]
+        return f"The weather in {city} is {weather} with a temperature of {temp}°C."
+    else:
+        return "Sorry, I couldn't retrieve the weather information."
+
+def chatbot():
+    print("Hello! I'm your chatbot. Ask me about the weather or say 'exit' to quit.")
+    while True:
+        user_input = input("You: ")
+        if user_input.lower() in ["exit", "quit", "bye"]:
+            print("Chatbot: Goodbye!")
+            break
+        doc = nlp(user_input)
+        if any(token.lower_ in ["weather", "temperature"] for token in doc):
+            # Extract city name as the last proper noun in the input
+            city = None
+            for ent in doc.ents:
+                if ent.label_ == "GPE":  # Geopolitical entity
+                    city = ent.text
+                    break
+            if city:
+                print("Chatbot:", get_weather(city))
+            else:
+                print("Chatbot: Please specify the city you're interested in.")
+        else:
+            print("Chatbot: I'm here to provide weather updates. Please ask about the weather in a city.")
+
+if __name__ == "__main__":
+    chatbot()
