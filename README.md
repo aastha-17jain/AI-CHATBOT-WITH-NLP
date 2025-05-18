@@ -66,3 +66,5 @@ For instance, a chatbot built with spaCy can efficiently handle tasks like extra
 Conclusion
 
 Building a chatbot using spaCy or NLTK involves understanding the strengths of each library and choosing the one that best fits your project's requirements. By leveraging these powerful NLP tools, you can create chatbots capable of understanding and responding to user queries effectively.
+
+<img width="960" alt="Image" src="https://github.com/user-attachments/assets/5676d879-2f7e-4b36-a3a4-5bc4f6fd676d" />
